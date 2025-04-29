@@ -1,5 +1,11 @@
 - ID: il-001
   Category: 信息泄露
+  Created_at: 2025-04-29
+  Contributors: 
+    - [@deepsec-top](https://github.com/deepsec-top)
+  Additional_Info: |
+    - 本内容不作为训练语料内容，仅作为共同编辑时参考。
+    - Github信息泄露，往往可能出发网盘、笔记等系统的信息泄露和调查，未来可以在考虑丰富一下思路
   Question: |
     - 组织背景：这是一个典型的医疗行业单位，该单位已经通过等级保护测评3级认证。信息系统由医院IT安全团队负责保障，另外有2～3名长期驻场的安全外包人员。使用了通用版VPN来提供远程访问。
     - 事件描述：根据合伙伙伴通知，该企业有敏感信息（部分信息系统的API KEY）暴露在github公开项目中。
