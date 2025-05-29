@@ -1,0 +1,38 @@
+- ID: wa-004
+  Category: Web攻击
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - 反弹shell攻击检测
+    - 远程命令执行攻击
+  Title_CN: Web攻击-反弹shell攻击
+  Title_EN: web attack - reverse shell attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：阿里云门户网站环境
+    - 事件描述：检测到反弹shell攻击，攻击IP为123.123.54.12，目标主机为21.13.5.61
+    - 上下文：攻击结果显示服务器响应状态码200，返回包包含 /etc/passwd 内容，确认命令执行成功
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 检查攻击 IP 在 NTA 日志中的行为轨迹，判断是否存在横向移动或持久化攻击。
+    2. 查询攻击 IP 的 WHOIS 信息及 IP 信誉库，确认是否为已知威胁源。
+    3. 核查服务器是否存在残留攻击痕迹（如上传文件、计划任务、异常远程连接）。
+    4. 分析同类接口（含 "deviceUdid" 参数）是否存在统一漏洞入口。
+
+  Response: |
+    1. 临时隔离受影响主机 21.13.5.61，阻断攻击者后续操作。
+    2. 封禁攻击 IP 123.123.54.12，并在 WAF 中设置策略拦截该类访问行为。
+    3. 回溯攻击路径 /catalog-portal/ui/oauth/verify 的所有请求，排查批量利用迹象。
+    4. 检查服务器日志中状态码 200 且返回包超长的请求，识别敏感文件泄露情况。
+    5. 扫描系统日志和应用日志，检测命令执行痕迹及后门文件(如 /bin/sh、/etc/crontab)。
+    6. 使用文件完整性工具(如 Tripwire)核查系统关键文件是否被篡改。
+    7. 组织开发团队加固 URL 参数解析逻辑，避免 EL/SpEL 注入漏洞。
+    8. 排查其他系统中同类框架及漏洞版本组件，避免横向攻击。
+    9. 启动漏洞通报机制，纳入安全闭环管理，记录漏洞修复进度。
+
+  Log_Sample: |
+    ```
+    nsfocus,V1,alert,2099,Linux信息收集命令执行成功,25752,220952,1,Lvmeng,1744125725,10.11.0.87,681C-A3EB-95C2-E0E9,UTS,101.200.160.124,,20104,10.9.152.61,,5678,TCP,HTTP,211.136.166.51:5678,,GET,,200,R0VUIC9jYXRhbG9nLXBvcnRhbC91aS9vYXV0aC92ZXJpZnk/ZXJyb3I9JmRldmljZVVkaWQ9JTI0JTdiJTIyJTY2JTcyJTY1JTY1JTZkJTYxJTcyJTZiJTY1JTcyJTJlJTc0JTY1JTZkJTcwJTZjJTYxJTc0JTY1JTJlJTc1JTc0JTY5JTZjJTY5JTc0JTc5JTJlJTQ1JTc4JTY1JTYzJTc1JTc0JTY1JTIyJTNmJTZlJTY1JTc3JTI4JTI5JTI4JTIyJTYzJTYxJTc0JTIwJTJmJTY1JTc0JTYzJTJmJTcwJTYxJTczJTczJTc3JTY0JTIyJTI5JTdkIEhUVFAvMS4x
+    ``` 

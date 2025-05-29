@@ -1,0 +1,61 @@
+- ID: wa-002
+  Category: Web攻击
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - Java FreeMarker模板注入攻击检测
+    - 远程代码执行漏洞利用
+  Title_CN: Web攻击-Java FreeMarker模板注入
+  Title_EN: web attack - java freemarker template injection
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：Web应用服务器环境，运行Solr服务
+    - 事件描述：攻击者通过特制的HTTP GET请求，试图利用Java FreeMarker模板注入漏洞。请求中包含了恶意的参数，试图执行系统命令 cat /etc/passwd
+    - 上下文：响应内容显示了敏感的系统文件 /etc/passwd 的内容，表明攻击者成功利用了该漏洞
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 确认目标Web应用是否存在Java FreeMarker模板注入漏洞，并检查相关配置。
+    2. 分析请求参数中是否包含恶意代码，确认是否有系统命令被执行。
+    3. 检查目标服务器的访问日志，排查是否有其他异常请求或重复访问行为。
+    4. 评估攻击者是否通过该漏洞获得了敏感数据或执行了其他恶意操作。
+    5. 检查服务器上是否有异常的进程或服务在运行，确认是否存在后门或持久化机制。
+    6. 复查是否存在任何敏感数据被访问或导出的记录，评估潜在信息泄露风险。
+
+  Response: |
+    1. 立即隔离受影响的Web服务器（110.10.19.119），中断外部访问流量。
+    2. 审核该Web应用的配置，全面修复Java FreeMarker模板注入相关漏洞，更新到安全版本。
+    3. 分析响应内容及请求参数，确认是否有恶意代码被执行，必要时进行取证。
+    4. 回溯分析攻击时间点前后的日志，识别是否存在持久化机制或横向行为。
+    5. 利用威胁情报封禁10.11.0.87来源IP，检查是否命中已知攻击者活动轨迹。
+    6. 重新部署WAF与IDS策略，对疑似模板注入攻击路径增加高优先级告警。
+    7. 建议对全网Web应用资产开展基线扫描和统一补丁加固，防止类似攻击再次发生。
+
+  Log_Sample: |
+    ```
+    {
+      "log_type": "alert",
+      "attack_type": "疑似请求参数中存在Java FreeMarker模板注入",
+      "event_count": "1",
+      "src_ip": "10.11.0.87",
+      "src_mac": "681C-A3EB-95C2-E0E9",
+      "dest_ip": "110.10.19.119",
+      "src_port": "20104",
+      "dest_ip_2": "172.19.12.6",
+      "dest_port": "5678",
+      "transport_protocol": "TCP",
+      "application_protocol": "HTTP",
+      "target_domain": "211.136.166.51:5678",
+      "request_method": "GET",
+      "response_status_code": "200",
+      "request_header": "GET /catalog-portal/ui/oauth/verify?error=&deviceUuid=$%7b%22%66%72%65%65%6d%61%72%6b%65%72%2e%74%65%6d%70%6c%61%74%65%2e%75%74%69%6c%69%74%79%2e%45%78%65%63%75%74%65%22%3f%6e%65%77%28%29%28%22%63%61%74%20%2f%65%74%63%2f%70%61%73%73%77%64%22%29%7d HTTP/1.1",
+      "response_info": {
+        "streams": [
+          {
+            "stream": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsolr:x:8983:8983::/home/solr:"
+          }
+        ]
+      }
+    }
+    ``` 

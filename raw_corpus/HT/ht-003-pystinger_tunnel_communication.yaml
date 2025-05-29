@@ -1,0 +1,90 @@
+- ID: ht-003
+  Category: 黑客工具
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - 毒刺pystinger隧道通信工具检测
+    - 典型的隧道通信C2行为
+  Title_CN: 黑客工具-毒刺pystinger隧道通信
+  Title_EN: hacker tool - pystinger tunnel communication
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：阿里云信息招聘网站环境
+    - 事件描述：检测到来源IP 101.200.160.124 通过HTTP协议向服务器10.19.61.92的/proxy.php接口发起POST请求，响应状态码为200，目标成功返回数据包
+    - 上下文：该通信流量特征与毒刺pystinger隧道通信工具高度匹配。攻击流量使用伪造浏览器 User-Agent（Chrome/58.0.3029.110）和常见路径"/proxy.php"以掩盖C2通信。POST 请求体中包含字段 SENDDATA 与 Remoteserver，数据经Base64编码，符合已知IOC特征
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 核查/proxy.php接口访问日志，确认是否存在异常大量POST请求行为。
+    2. 检查服务器10.19.61.92上是否部署了后门程序或恶意代理模块。
+    3. 使用NTA（网络流量分析）回溯101.200.160.124历史连接行为，判断是否存在持久隧道通信特征。
+    4. 对攻击来源IP进行WHOIS查询及威胁情报检索，确认其背景归属及风险等级。
+    5. 检查是否存在其他受害主机同样与101.200.160.124建立过通信。
+    6. 根据MITRE ATT&CK模型，确认隧道通信是否伴随后续C2命令、数据泄露行为。
+    7. 评估内网扩散风险，考虑是否进行内网资产扫描以排查潜在横向渗透。
+
+  Response: |
+    1. 临时封禁来源IP 101.200.160.124，并在防火墙和WAF配置封锁其访问。
+    2. 立即隔离服务器10.19.61.92，防止潜在C2通信进一步执行命令。
+    3. 导出/proxy.php相关日志文件，交由威胁分析团队进行取证溯源。
+    4. 扫描服务器10.19.61.92是否存在已知pystinger通信组件或异常进程。
+    5. 对连接到10.19.61.92的其他主机流量进行异常检测，排查潜在扩散风险。
+    6. 更新入侵检测（IDS/IPS）特征库，添加相关pystinger通信特征规则。
+    7. 启动安全事件通报机制，定期更新调查进展并组织总结复盘，完善隧道通信防御策略。
+
+  Log_Sample: |
+    ```
+    {
+      "transProtocol": "TCP",
+      "appProtocol": "http",
+      "srcAddress": "101.200.160.124",
+      "srcPort": "20015",
+      "destAddress": "10.19.61.92",
+      "destPort": "5679",
+      "vlanId": "203",
+      "deviceAddress": "10.11.72.24",
+      "eventCount": "1",
+      "srcGeoCountry": "中国",
+      "destGeoCountry": "中国",
+      "destGeoRegion": "上海",
+      "destGeoCity": "上海",
+      "direction": "10",
+      "victimAddress": "srcAddress",
+      "victim": ["101.200.160.124"],
+      "srcSecurityZone": "outer",
+      "logType": "alert",
+      "dataType": "ids",
+      "catOutcome": "OK",
+      "severity": "7",
+      "startTime": "2025-04-08 22:34:12",
+      "endTime": "2025-04-08 22:34:12",
+      "deviceReceiptTime": "2025-04-08 22:34:12",
+      "collectorReceiptTime": "2025-04-08 22:34:12",
+      "ruleName": "检测到毒刺pystinger隧道通信工具",
+      "ruleType": "/SuspTraffic/Tunnel",
+      "alarmType": "隧道通信->其他",
+      "requestMethod": "POST",
+      "requestUrlQuery": "/proxy.php",
+      "requestUrl": "/proxy.php",
+      "requestHeader": "POST /proxy.php HTTP/1.1<br/>Host: 10.211.55.3:8080<br/>Connection: keep-alive<br/>Accept-Encoding: gzip<br/>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8<br/>User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36<br/>Accept-Language: zh-CN,zh;q=0.8<br/>Content-Length: 188<br/>Content-Type: application/x-www-form-urlencoded<br/>",
+      "requestBody": "SENDDATA=eyJjbG9zZV9jbGllbnRzIjogW10sICJtaXJyb3JfY2xvc2VfY2xpZW50cyI6IFtdLCAiZGF0YSI6IHt9LCAibWlycm9yX2RhdGEiOiB7fX0%3D&Endpoint=%2Fdata_sync%2F&Remoteserver=http%3A%2F%2F127.0.0.1%3A60010",
+      "responseHeader": "HTTP/1.1 200 OK<br/>Date: Thu, 22 Sep 2022 04:57:02 GMT<br/>Server: Apache/2.4.39 (Win64) OpenSSL/1.1.1b mod_fcgid/2.3.9a mod_log_rotate/1.02<br/>X-Powered-By: PHP/5.3.29<br/>Keep-Alive: timeout=5, max=99<br/>Connection: Keep-Alive<br/>Transfer-Encoding: chunked<br/>Content-Type: text/html<br/>",
+      "responseMsg": "eyJyZXR1cm5fZGF0YSI6IHt9LCAid2FpdCI6IDAuMDUsICJtaXJyb3JfcmV0dXJuX2RhdGEiOiB7fX0=",
+      "responseCode": "200",
+      "destHostName": "10.211.55.3:8080",
+      "name": "检测到毒刺pystinger隧道通信工具",
+      "txId": "8",
+      "confidence": "High",
+      "httpVersion": "HTTP/1.1",
+      "accessAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+      "attackStage": "5",
+      "attackStatus": "1",
+      "tacticId": "TA0011",
+      "techniquesId": "T1090",
+      "message": "检测到毒刺pystinger隧道通信工具. 来源：101.200.160.124/20015, 目的：10.19.61.92/5679",
+      "isAPT": "false",
+      "killChain": "KC_CommandControl",
+      "mssTag": "MSS0030,MSS0059,MSS0060"
+    }
+    ``` 

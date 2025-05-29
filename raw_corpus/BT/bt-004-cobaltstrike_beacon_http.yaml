@@ -1,0 +1,81 @@
+- ID: bt-004
+  Category: 后门木马
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - CobaltStrike Beacon HTTP通信检测
+    - 典型的C2上线行为，需要重点关注
+  Title_CN: 后门木马-CobaltStrike Beacon HTTP上线
+  Title_EN: backdoor trojan - cobaltstrike beacon http
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：公有云主机环境，存在外部网络访问
+    - 事件描述：检测到外部主机 101.20.10.14 使用HTTP协议访问内网主机 10.9.12.11 的路径 "/2cyN"，目标端口为5679，返回状态码为200
+    - 上下文：User-Agent 模拟常见浏览器特征（IE9），通信路径短小随机，响应类型为 application/octet-stream，符合CobaltStrike Beacon在上线阶段的通信特征
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 关联该主机历史网络行为，确认是否存在周期性C2回连流量，判断Beacon间隔和模式。
+    2. 检查10.9.12.11主机是否存在未知启动项或与CobaltStrike相关的已知恶意模块。
+    3. 使用流量分析工具（NTA/IDS）回溯近1小时内该主机其他HTTP连接特征。
+    4. 对101.20.10.14进行情报分析，识别是否为已知CobaltStrike基础设施或云渗透节点。
+    5. 核查是否还有其他主机向同一目标或相似路径（如/2xxN）发送请求，判断横向控制范围。
+    6. 判断该Beacon是否进入任务执行阶段（Stage 2/3），分析是否伴随命令下发或模块加载行为。
+    7. 结合MITRE ATT&CK T1071/T1095/T1102等技术分析链条完整性，并评估是否已造成权限获取或数据泄露。
+  
+  Response: |
+    1. 临时隔离目标主机10.9.12.11，防止其继续与潜在C2服务器通信。
+    2. 对101.20.10.14配置临时封禁策略，防止后续流量接入。
+    3. 导出完整HTTP通信流量及日志，提供威胁情报分析与回溯。
+    4. 使用EDR产品对目标主机执行全面检查，定位Beacon implant位置。
+    5. 更新防火墙与WAF策略，增加该类短路径+CobaltStrike特征通信规则。
+    6. 对整个网段内有外联行为的主机进行异常检测，识别是否存在多节点控制风险。
+    7. 启动应急响应流程，对本次事件进行分级处置并开展复盘，修复相关安全配置缺陷。
+
+  Log_Sample: |
+    ```
+    {
+      "transProtocol": "TCP",
+      "appProtocol": "http",
+      "srcAddress": "101.20.10.14",
+      "srcPort": "20014",
+      "destAddress": "10.9.12.11",
+      "destPort": "5679",
+      "eventCount": "1",
+      "direction": "10",
+      "attackerAddress": "srcAddress",
+      "victimAddress": "destAddress",
+      "attackDirection": "1",
+      "attacker": ["101.20.10.14"],
+      "victim": ["10.9.12.11"],
+      "srcSecurityZone": "outer",
+      "logType": "alert",
+      "catOutcome": "OK",
+      "severity": "7",
+      "startTime": "2025-04-08 23:13:12",
+      "endTime": "2025-04-08 23:13:12",
+      "deviceReceiptTime": "2025-04-08 23:13:12",
+      "collectorReceiptTime": "2025-04-08 23:13:12",
+      "ruleName": "检测到CobaltStrike上线(beacon-http)",
+      "alarmType": "可疑流量->可疑流量",
+      "requestMethod": "GET",
+      "requestUrlQuery": "/2cyN",
+      "requestUrl": "/2cyN",
+      "requestHeader": "GET /2cyN HTTP/1.1<br/>User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; BOIE9;ESES)<br/>Host: 39.96.50.58:7777<br/>Connection: Keep-Alive<br/>Cache-Control: no-cache<br/>",
+      "responseHeader": "HTTP/1.1 200 OK<br/>Date: Fri, 18 Nov 2022 12:40:11 GMT<br/>Content-Type: application/octet-stream<br/>Content-Length: 211034<br/>",
+      "responseCode": "200",
+      "destHostName": "39.96.50.58:7777",
+      "name": "检测到CobaltStrike上线(beacon-http)",
+      "txId": "0",
+      "confidence": "High",
+      "httpVersion": "HTTP/1.1",
+      "accessAgent": "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; BOIE9;ESES)",
+      "attackStage": "2",
+      "attackStatus": "1",
+      "pcapRecord": "true",
+      "message": "检测到CobaltStrike上线(beacon-http). 来源：101.20.10.14/20014, 目的：10.9.12.11/5679",
+      "isAPT": "false",
+      "killChain": "KC_CommandControl"
+    }
+    ``` 

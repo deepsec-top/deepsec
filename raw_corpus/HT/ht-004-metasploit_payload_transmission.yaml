@@ -1,0 +1,83 @@
+- ID: ht-004
+  Category: 黑客工具
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - Metasploit远控Payload传输检测
+    - 典型的C2命令控制行为
+  Title_CN: 黑客工具-Metasploit远控Payload传输
+  Title_EN: hacker tool - metasploit payload transmission
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：内网环境，存在对外网络访问
+    - 事件描述：系统检测到从内网主机 192.168.152.61（位于上海）向公网主机 119.200.10.14（北京区域IP）传输可疑Payload，匹配Metasploit生成的远程控制载荷特征
+    - 上下文：此行为通常出现在攻击链第四阶段（命令与控制阶段），攻击者利用植入的后门与C2服务器建立会话，进行命令下发或控制操作。Payload传输过程表现为特征性TCP通信，无正常业务上下文，Payload字段中呈现大量空字节填充及特征结构数据，初步判定为C2信道建立或Beacon回连行为
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 核查 192.168.152.61 是否存在已知远控木马组件，尤其关注Metasploit默认目录及命名结构。
+    2. 回溯端口 5679 的通信历史，确认是否存在周期性Beacon通信行为。
+    3. 分析 119.200.10.14 与其他内网主机是否存在类似C2流量，判断是否为大规模攻击。
+    4. 利用EDR终端日志还原Payload落地及执行链路，重点分析是否成功建立控制会话。
+    5. 核查是否有相关进程调用cmd/powershell等执行命令的记录。
+    6. 结合防火墙、流量分析日志判断该连接是否已建立双向通信。
+    7. 对 119.200.10.14 进行威胁情报查询，判断其是否为恶意C2服务器或跳板机。
+
+  Response: |
+    1. 立即隔离内网主机 192.168.152.61，防止可能的进一步控制和数据泄露。
+    2. 获取该主机24小时内的完整流量包（PCAP）和终端操作记录，提取所有相关上下文。
+    3. 启动主机威胁狩猎流程，分析是否存在已植入的木马或远控工具。
+    4. 在边界设备上临时封禁目标公网IP 119.200.10.14。
+    5. 根据检测规则更新IPS/IDS策略，对相同Payload结构加入拦截。
+    6. 检查该主机是否被用于反向代理、VPN或跳板操作，排除内网被滥用风险。
+    7. 通知威胁情报团队进行C2指纹提取，扩展IOC追踪与防御策略。
+
+  Log_Sample: |
+    ```
+    {
+      "transProtocol": "TCP",
+      "srcAddress": "119.200.10.14",
+      "srcPort": "20071",
+      "destAddress": "192.168.152.61",
+      "destPort": "5679",
+      "eventCount": "1",
+      "srcGeoLongitude": "116.401159",
+      "srcGeoLatitude": "39.902798",
+      "destGeoLongitude": "121.442254",
+      "destGeoLatitude": "31.290135",
+      "direction": "10",
+      "attackerAddress": "destAddress",
+      "victimAddress": "srcAddress",
+      "attackDirection": "0",
+      "attacker": ["192.168.152.61"],
+      "victim": ["119.200.10.14"],
+      "srcSecurityZone": "outer",
+      "logType": "alert",
+      "dataType": "ids",
+      "dataSubType": "attackAlert",
+      "catOutcome": "OK",
+      "catTechnique": "/Code/Trojan",
+      "severity": "7",
+      "startTime": "2025-04-08 23:17:21",
+      "endTime": "2025-04-08 23:17:21",
+      "deviceReceiptTime": "2025-04-08 23:17:21",
+      "collectorReceiptTime": "2025-04-08 23:17:21",
+      "ruleName": "检测到Metasploit传输payload(tcp协议)",
+      "ruleType": "/SuspTraffic/RemoteCtrl",
+      "alarmType": "远程控制->远控执行",
+      "payload": "..............................................................................................",
+      "rawPayload": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001A000000571B0010......",
+      "name": "检测到Metasploit传输payload(tcp协议)",
+      "txId": "0",
+      "confidence": "High",
+      "attackStage": "4",
+      "attackStatus": "1",
+      "pcapRecord": "true",
+      "tacticId": "TA0011",
+      "techniquesId": "T1071",
+      "message": "检测到Metasploit传输payload(tcp协议). 来源：119.200.10.14/20071, 目的：192.168.152.61/5679",
+      "isAPT": "false",
+      "killChain": "KC_CommandControl"
+    }
+    ``` 

@@ -1,0 +1,38 @@
+- ID: wa-001
+  Category: Web攻击
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - SQL注入攻击检测
+    - 典型的Web应用安全漏洞利用
+  Title_CN: Web攻击-SQL注入攻击
+  Title_EN: web attack - sql injection attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：Web应用服务器环境，提供HTTP服务
+    - 事件描述：攻击者通过GET请求，试图利用SQL注入漏洞进行攻击。请求中包含了可疑的SQL代码片段，响应状态为200，表明请求成功
+    - 上下文：该请求来源于 110.10.19.119，目标是 172.19.12.6，涉及到的协议为HTTP，请求路径为/search
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 确认目标Web应用是否存在SQL注入漏洞，特别是针对输入参数的过滤和验证。
+    2. 分析请求中包含的SQL代码，确认是否有恶意SQL查询被执行。
+    3. 检查目标服务器的访问日志，排查是否有其他异常请求或重复访问行为。
+    4. 评估攻击者是否通过该漏洞获得了敏感数据或执行了其他恶意操作。
+    5. 检查数据库的访问记录，确认是否存在异常的查询或数据泄露行为。
+    6. 复查是否存在任何敏感数据被访问或导出的记录，评估潜在信息泄露风险。
+
+  Response: |
+    1. 立即隔离受影响的Web服务器（172.19.12.6），中断外部访问流量。
+    2. 审核该Web应用的SQL查询逻辑，全面修复SQL注入漏洞，更新到安全版本。
+    3. 分析响应内容及请求参数，确认是否有恶意代码被执行，必要时进行取证。
+    4. 回溯分析攻击时间点前后的日志，识别是否存在持久化机制或横向行为。
+    5. 利用威胁情报封禁110.10.19.119来源IP，检查是否命中已知攻击者活动轨迹。
+    6. 重新部署WAF与IDS策略，对疑似SQL注入攻击路径增加高优先级告警。
+    7. 建议对全网Web应用资产开展基线扫描和统一补丁加固，防止类似攻击再次发生。
+
+  Log_Sample: |
+    ```
+    nsfocus,V1,alert,2027,SQL注入 sql_logic_simple,18612379,220512,1,Lvmeng,1744125502,10.11.0.87,681C-A3EB-95C2-E0E9,UTS,110.10.19.119,,20085,172.19.12.6,,5679,TCP,HTTP,www.ddd4.com,,GET,,200,R0VUIC9zZWFyY2g/a2V5d29yZD0lMjUzMSUyNTMxJTI1MjclMjUyOSUyNTI5JTI1MjAlMjU0MSUyNTRFJTI1NDQlMjUyMCUyNTM2JTI1MzclMjUzNiUyNTM3JTI1M0QlMjUzNiUyNTM3JTI1MzYlMjUzNyUyNTIzIEhUVFAvMS4xDQpDYWNoZS1Db250cm9sOiBuby1jYWNoZQ0KVXNlci1BZ2VudDogc3FsbWFwLzEuNi40I3N0YWJsZSAoaHR0cHM6Ly9zcWxtYXAub3JnKQ0KQ29va2llOiBQSFBTRVNTSUQ9OWthY2F0MmxodGNndHFudG5mZTJnaDVpbTENCkhvc3Q6IHd3dy5kZGQ0LmNvbQ0KQWNjZXB0OiAqLyoNCkFjY2VwdC1FbmNvZGluZzogZ3ppcCxkZWZsYXRlDQpDb25uZWN0aW9uOiBjbG9zZQ0KDQo=
+    ``` 

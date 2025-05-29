@@ -1,0 +1,89 @@
+- ID: vr-001
+  Category: 漏洞利用
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - Exchange ProxyLogon远程代码执行漏洞利用
+    - CVE-2021-27065任意文件写入漏洞
+  Title_CN: 漏洞利用-Exchange ProxyLogon远程代码执行
+  Title_EN: vulnerability exploitation - exchange proxylogon rce
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：Microsoft Exchange Server环境，位于上海
+    - 事件描述：攻击者尝试利用 CVE-2021-27065（Exchange ProxyLogon）漏洞，通过特制的HTTP GET请求访问已上传的WebShell脚本 /owa/auth/QzU2risf9yZ6NOv7cmVD.aspx
+    - 上下文：请求中包含JScript代码用于远程执行 whoami 命令，最终响应中返回 nt authority\\system，说明攻击者已成功远程执行命令，并获得系统权限
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 确认 Exchange 服务器是否存在历史 ProxyLogon 相关补丁缺失或失效。
+    2. 分析 WebShell 文件 /owa/auth/QzU2risf9yZ6NOv7cmVD.aspx 是否仍然存在于服务器路径中。
+    3. 检查IIS日志中是否有多个来源对该路径的访问尝试，排查是否已有多个攻击阶段展开。
+    4. 分析攻击者通过 WebShell 执行的系统命令种类及频率，确认是否涉及权限提升或持久化操作。
+    5. 检查其他目录下是否有同类结构的WebShell（如auth/*.aspx）被植入。
+    6. 利用EDR回溯系统调用链，判断是否有通过WScript.Shell调用执行系统命令的进程活动。
+    7. 复查是否存在任何导出或敏感数据被访问的记录，评估潜在信息泄露风险。
+
+  Response: |
+    1. 立即隔离受影响Exchange主机（192.168.152.61），中断外部访问流量。
+    2. 删除并备份 /owa/auth/QzU2risf9yZ6NOv7cmVD.aspx WebShell文件，提交样本分析。
+    3. 审核该主机的Exchange补丁版本与配置，全面修复ProxyLogon相关漏洞（包括 CVE-2021-26855、CVE-2021-27065）。
+    4. 回溯分析攻击时间点前后的日志，识别是否存在持久化机制或横向行为。
+    5. 利用威胁情报封禁111.20.16.11来源IP，检查是否命中已知攻击者活动轨迹。
+    6. 重新部署WAF与EDR策略，对疑似WebShell路径增加高优先级告警。
+    7. 建议对全网Exchange资产开展基线扫描和统一补丁加固。
+
+  Log_Sample: |
+    ```
+    {
+      "transProtocol": "TCP",
+      "appProtocol": "http",
+      "srcAddress": "111.20.16.11",
+      "srcPort": "20079",
+      "destAddress": "192.168.152.61",
+      "destPort": "5678",
+      "eventCount": "1",
+      "srcGeoLongitude": "116.401159",
+      "srcGeoLatitude": "39.902798",
+      "direction": "10",
+      "attackerAddress": "111.20.16.11",
+      "victimAddress": "192.168.152.61",
+      "attackDirection": "1",
+      "attacker": ["111.20.16.11"],
+      "victim": ["192.168.152.61"],
+      "srcSecurityZone": "outer",
+      "logType": "alert",
+      "dataType": "ids",
+      "dataSubType": "attackAlert",
+      "catOutcome": "OK",
+      "severity": "7",
+      "startTime": "2025-04-08 23:17:50",
+      "endTime": "2025-04-08 23:17:50",
+      "deviceReceiptTime": "2025-04-08 23:17:50",
+      "collectorReceiptTime": "2025-04-08 23:17:50",
+      "ruleName": "Microsoft Exchange ProxyLogon任意文件写入漏洞(CVE-2021–27065)",
+      "ruleType": "/WebAttack/CodeInjection",
+      "alarmType": "WEB攻击->远程代码执行",
+      "requestMethod": "GET",
+      "requestUrlQuery": "/owa/auth/QzU2risf9yZ6NOv7cmVD.aspx",
+      "requestUrl": "/owa/auth/QzU2risf9yZ6NOv7cmVD.aspx",
+      "requestBody": "code=Response.Write%28new+ActiveXObject%28%22WScript.Shell%22%29.exec%28%22whoami%22%29.StdOut.ReadAll%28%29%29%3B",
+      "responseMsg": "nt authority\\system",
+      "responseCode": "200",
+      "destHostName": "211.136.166.51:5678",
+      "name": "Microsoft Exchange ProxyLogon任意文件写入漏洞(CVE-2021–27065)",
+      "cve": "CVE-202127065",
+      "txId": "0",
+      "confidence": "High",
+      "httpVersion": "HTTP/1.1",
+      "accessAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+      "attackStage": "1",
+      "attackStatus": "1",
+      "pcapRecord": "true",
+      "tacticId": "TA0001",
+      "techniquesId": "T1190",
+      "message": "Microsoft Exchange ProxyLogon任意文件写入漏洞(CVE-2021–27065). 来源：111.20.16.11/20079, 目的：192.168.152.61/5678",
+      "isAPT": "false",
+      "killChain": "KC_Exploitation"
+    }
+    ``` 

@@ -1,0 +1,92 @@
+- ID: ht-005
+  Category: 黑客工具
+  Created_At: 2025-04-29
+  Contributors: 
+    - FOOL
+  Additional_Info: |
+    - neo-reGeorg加密隧道通信工具检测
+    - 典型的WebShell隧道代理行为
+  Title_CN: 黑客工具-neo-reGeorg加密隧道通信
+  Title_EN: hacker tool - neo regeorg tunnel communication
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：公有云主机环境，位于上海
+    - 事件描述：检测到外部IP 110.119.180.124 向内网主机 10.91.110.99 发起 HTTP POST 请求，目标路径为 "/tunnel.php"，响应状态码为200
+    - 上下文：User-Agent 信息伪装为 Safari 浏览器，通信使用非标准自定义Header字段（如 Ffydhndmhhl），请求体为加密二进制数据，符合 neo-reGeorg 工具特征。neo-reGeorg 是常用于通过WebShell创建加密隧道的隧道工具，本次通信行为可能用于远程SOCKS代理或内网横向移动
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+    1. 检查10.91.110.99主机Web服务是否存在被上传的恶意PHP代理脚本（如tunnel.php）。
+    2. 追踪该HTTP通信会话，确认是否存在长连接、持续代理行为（例如SOCKS over HTTP）。
+    3. 检查该主机是否与其他内网资产有异常连接，判断是否存在隧道转发和横向渗透操作。
+    4. 使用沙箱或手动分析方式解析请求体中加密内容，评估数据传输类型与敏感程度。
+    5. 利用IDS/NTA工具进行历史流量还原，分析是否早前已有该路径通信行为被忽略。
+    6. 检索是否有其他主机也存在 /tunnel.php 或相似路径的访问行为，排查攻击面广度。
+    7. 判断是否存在WebShell行为残留，如上传脚本、定时任务、自启动代理等。
+
+  Response: |
+    1. 紧急隔离10.91.110.99主机，防止其继续作为隧道节点或被远控操作。
+    2. 对110.119.180.124实施封禁并将其纳入威胁情报黑名单。
+    3. 提取/tunnel.php脚本文件及其上下文日志，进行样本分析及取证。
+    4. 启动Web服务器路径扫描和文件完整性检测，识别是否有其他隐藏代理入口。
+    5. 在防火墙和WAF中添加基于neo-reGeorg通信特征的阻断策略（如特定User-Agent与路径组合）。
+    6. 对与该主机有交互记录的其他主机执行横向检测，防止侧向渗透形成攻击链条。
+    7. 更新内网资产的Web应用安全策略，纳入文件上传、路径访问及长连接行为的实时监控与报警。
+
+  Log_Sample: |
+    ```
+    {
+      "transProtocol": "TCP",
+      "appProtocol": "http",
+      "srcAddress": "110.119.180.124",
+      "srcPort": "20019",
+      "destAddress": "10.91.110.99",
+      "destPort": "5679",
+      "eventCount": "1",
+      "srcGeoCountry": "中国",
+      "destGeoCountry": "中国",
+      "destGeoRegion": "上海",
+      "destGeoCity": "上海",
+      "direction": "10",
+      "attackerAddress": "110.119.180.124",
+      "victimAddress": "10.91.110.99",
+      "attackDirection": "1",
+      "attacker": ["110.119.180.124"],
+      "victim": ["10.91.110.99"],
+      "srcSecurityZone": "outer",
+      "logType": "alert",
+      "dataType": "ids",
+      "catOutcome": "OK",
+      "catTechnique": "/TrafficAnomaly",
+      "severity": "7",
+      "startTime": "2025-04-08 23:14:37",
+      "endTime": "2025-04-08 23:14:37",
+      "deviceReceiptTime": "2025-04-08 23:14:37",
+      "collectorReceiptTime": "2025-04-08 23:14:37",
+      "ruleName": "检测到neo-reGeorg加密通信流量(PHP)",
+      "ruleType": "/SuspTraffic/Tunnel",
+      "alarmType": "隧道通信->其他",
+      "requestMethod": "POST",
+      "requestUrlQuery": "/tunnel.php",
+      "requestUrl": "/tunnel.php",
+      "requestHeader": "POST /tunnel.php HTTP/1.1<br/>Host: 10.211.55.3:8081<br/>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3<br/>Accept-Encoding: gzip, deflate<br/>Accept: */*<br/>Connection: keep-alive<br/>Ffydhndmhhl: 8RGIFgZzRnuXw0chjWXQKACtWP7tBSKiDnysT9hP9pa<br/>Content-type: application/octet-stream<br/>Cookie: PHPSESSID=6003mhpta7uaj1l467ph7de084;<br/>Content-Length: 536<br/>",
+      "requestBody": "HLlaQ0S2wv32drF2zPS6dvn4dPS6dvn4dq4TwbEhzXSLy5CVcXzLtTajcXCK15gic5CjQg8alUCD19BiX+4Qd7tLcPCi10BTtjBi1JoVt5hB1XRiX+4XdvAVYrtLfrSVcPEeYrlKwrU6fuY2X+4lzvljwaUbYrALcPEtd744dOi8wTaV10Ch5rUJfrALd7thcjEFdbH2d0Etkr1R531Rr0Ci1UMitlM7s9EEzIE6Yln2ko/4n0M31TzV1TkRsg/Qlg31w0E6fr/2Qgn2kv/Ds9EXfIFDdraD15C3wJCV10BKQUt8YqUjf9M31TzV1Tkt0oUJkvlKnXhRsPMpX+49YrY2zqljcPEhnIHKcPMD15CV1TzV15QAwJamcXCB19Mt0oUJkvlKn03UdqtDYO2VYThRY744z0KRYOlqdOULY+Ls+rtJYuELwai8dqn3krn2cPEmf03X5PimfX/iy5CVc+Ls+vSDfv22cPE+9UE5Hlt59a+SnbFJtIUhnbF2zq3KzvBAdq32frQAfOAbdX1t0RLs",
+      "responseHeader": "HTTP/1.1 200 OK<br/>Server: nginx/1.15.11<br/>Date: Tue, 20 Sep 2022 09:59:56 GMT<br/>Content-Type: application/octet-stream<br/>Transfer-Encoding: chunked<br/>Connection: keep-alive<br/>X-Powered-By: PHP/5.3.29<br/>Set-Cookie: PHPSESSID=6003mhpta7uaj1l467ph7de084; path=/<br/>Expires: Thu, 19 Nov 1981 08:52:00 GMT<br/>Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0<br/>Pragma: no-cache<br/>Sbxspawzq: CapFLueBCn2ZM<br/>",
+      "responseCode": "200",
+      "destHostName": "10.211.55.3:8081",
+      "name": "检测到neo-reGeorg加密通信流量(PHP)",
+      "txId": "147",
+      "confidence": "High",
+      "httpVersion": "HTTP/1.1",
+      "accessAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3",
+      "attackStage": "5",
+      "attackStatus": "1",
+      "pcapRecord": "true",
+      "tacticId": "TA0011",
+      "techniquesId": "T1071",
+      "toolsName": "neo-reGeorg",
+      "message": "检测到neo-reGeorg加密通信流量(PHP). 来源：110.119.180.124/20019, 目的：10.91.110.99/5679",
+      "isAPT": "false",
+      "killChain": "KC_CommandControl"
+    }
+    ``` 
