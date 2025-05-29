@@ -22,46 +22,46 @@
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| bt-003 | [后门木马-webshell-上传内存马通信](../raw_corpus/BT/bt-003-webshell_upload_memory_shell.yaml) | FOOL |
-| bt-004 | [后门木马-CobaltStrike Beacon HTTP上线](../raw_corpus/BT/bt-004-cobaltstrike_beacon_http.yaml) | FOOL |
-| bt-005 | [后门木马-冰蝎4.0 PHP Webshell通信](../raw_corpus/BT/bt-005-webshell_behinder_4_0.yaml) | FOOL |
+| bt-003 | [后门木马-webshell-上传内存马通信](BT/bt-003-webshell_upload_memory_shell.yaml) | FOOL |
+| bt-004 | [后门木马-CobaltStrike Beacon HTTP上线](BT/bt-004-cobaltstrike_beacon_http.yaml) | FOOL |
+| bt-005 | [后门木马-冰蝎4.0 PHP Webshell通信](BT/bt-005-webshell_behinder_4_0.yaml) | FOOL |
 
 ### 🔧 黑客工具 (HT - Hacker Tool)
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| ht-002 | [黑客工具-SMBExec远程执行工具](../raw_corpus/HT/ht-002-smbexec_remote_execution.yaml) | FOOL |
-| ht-003 | [黑客工具-毒刺pystinger隧道通信](../raw_corpus/HT/ht-003-pystinger_tunnel_communication.yaml) | FOOL |
-| ht-004 | [黑客工具-Metasploit远控Payload传输](../raw_corpus/HT/ht-004-metasploit_payload_transmission.yaml) | FOOL |
-| ht-005 | [黑客工具-neo-reGeorg加密隧道通信](../raw_corpus/HT/ht-005-neo_regeorg_tunnel_communication.yaml) | FOOL |
+| ht-002 | [黑客工具-SMBExec远程执行工具](HT/ht-002-smbexec_remote_execution.yaml) | FOOL |
+| ht-003 | [黑客工具-毒刺pystinger隧道通信](HT/ht-003-pystinger_tunnel_communication.yaml) | FOOL |
+| ht-004 | [黑客工具-Metasploit远控Payload传输](HT/ht-004-metasploit_payload_transmission.yaml) | FOOL |
+| ht-005 | [黑客工具-neo-reGeorg加密隧道通信](HT/ht-005-neo_regeorg_tunnel_communication.yaml) | FOOL |
 
 ### 🌐 Web攻击 (WA - Web Attack)
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| wa-001 | [Web攻击-SQL注入攻击](../raw_corpus/WA/wa-001-sql_injection_attack.yaml) | FOOL |
-| wa-002 | [Web攻击-Java FreeMarker模板注入](../raw_corpus/WA/wa-002-freemarker_template_injection.yaml) | FOOL |
-| wa-003 | [Web攻击-Python反序列化漏洞](../raw_corpus/WA/wa-003-python_unpickle_deserialization.yaml) | FOOL |
-| wa-004 | [Web攻击-反弹shell攻击](../raw_corpus/WA/wa-004-reverse_shell_attack.yaml) | FOOL |
+| wa-001 | [Web攻击-SQL注入攻击](WA/wa-001-sql_injection_attack.yaml) | FOOL |
+| wa-002 | [Web攻击-Java FreeMarker模板注入](WA/wa-002-freemarker_template_injection.yaml) | FOOL |
+| wa-003 | [Web攻击-Python反序列化漏洞](WA/wa-003-python_unpickle_deserialization.yaml) | FOOL |
+| wa-004 | [Web攻击-反弹shell攻击](WA/wa-004-reverse_shell_attack.yaml) | FOOL |
 
 ### ⛏️ 挖矿相关 (MC - Mining/Cryptocurrency)
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| mc-001 | [挖矿木马-挖矿木马外联通信](../raw_corpus/MC/mc-001-mining_trojan_communication.yaml) | FOOL |
+| mc-001 | [挖矿木马-挖矿木马外联通信](MC/mc-001-mining_trojan_communication.yaml) | FOOL |
 
 ### 🔓 漏洞利用 (VR - Vulnerability Response)
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| vr-001 | [漏洞利用-Exchange ProxyLogon远程代码执行](../raw_corpus/VR/vr-001-exchange_proxylogon_cve_2021_27065.yaml) | FOOL |
+| vr-001 | [漏洞利用-Exchange ProxyLogon远程代码执行](VR/vr-001-exchange_proxylogon_cve_2021_27065.yaml) | FOOL |
 
 ### 📋 信息泄露 (IL - Information Leakage)
 
 | ID | 语料标题 | 贡献人 |
 |----|----------|--------|
-| il-001 | [信息泄露-github敏感信息泄露](../raw_corpus/IL/il-001-github_sensitive_information_leakage.yaml) | [@deepsec-top](https://github.com/deepsec-top) |
-| il-002 | [Web根目录文件遍历导致信息泄露，可下载/etc/passwd文件](../raw_corpus/IL/IL-002-web_root_directory_information_leakage.yaml) | [@wzfukui](https://github.com/wzfukui) |
+| il-001 | [信息泄露-github敏感信息泄露](IL/il-001-github_sensitive_information_leakage.yaml) | [@deepsec-top](https://github.com/deepsec-top) |
+| il-002 | [Web根目录文件遍历导致信息泄露，可下载/etc/passwd文件](IL/IL-002-web_root_directory_information_leakage.yaml) | [@wzfukui](https://github.com/wzfukui) |
 
 ### 🎣 钓鱼攻击 (FA - Fishing Attack)
 
@@ -91,7 +91,7 @@
 
 - [项目主页](../README.md)
 - [贡献指南](../docs/CONTRIBUTING.md)
-- [原始语料目录](../raw_corpus/)
+- [原始语料目录]()
 - [处理脚本目录](../scripts/)
 
 ---
