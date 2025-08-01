@@ -1,0 +1,21 @@
+- ID: it-003
+  Category: 内部威胁与横向移动
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Sodinokibi(REvil)勒索病毒感染事件
+    - 攻击入口为暴露在公网并存在弱口令的OA服务器RDP服务
+    - 攻击者成功后进行了大规模横向移动并清除了日志
+  Title_CN: 内部威胁与横向移动-OA服务器RDP弱口令导致大规模勒索
+  Title_EN: insider threat & lateral movement - oa server rdp weak password leads to sodinokibi
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某大型热电政企机构，拥有收费、远程监测等多个关键业务系统。
+    - 事件描述：包括邮件系统在内的23个核心系统被Sodinokibi勒索病毒大规模加密，导致业务严重停摆。
+    - 上下文：经多方日志关联分析，确认攻击源头为一台OA服务器。该服务器因管理疏忽，将远程桌面(RDP)服务映射到公网，且存在弱口令/空口令。攻击者利用此漏洞入侵后，以此为跳板对内网发动了横向移动攻击，并在得手后清除了主机日志以掩盖行踪。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |

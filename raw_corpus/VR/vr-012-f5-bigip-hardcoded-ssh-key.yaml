@@ -1,0 +1,27 @@
+- ID: vr-012
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - F5 BIG-IP系列产品内置SSH私钥漏洞
+    - 根因是所有设备固件中内置了同一个SSH公钥，而其对应的私钥被泄露
+    - 允许攻击者绕过身份验证，直接以root权限登录
+  Title_CN: 漏洞利用-F5 BIG-IP内置SSH私钥漏洞
+  Title_EN: vulnerability exploitation - f5 big-ip hardcoded ssh private key
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某大型企业数据中心，使用F5 BIG-IP系列产品进行应用交付和负载均衡。
+    - 事件描述：安全社区披露，F5 BIG-IP多个版本的产品中存在一个严重的配置错误，允许未经验证的远程root访问。
+    - 上下文：该漏洞的原因是，所有受影响的设备固件中都内置了同一个SSH公钥，而其对应的私钥已广为人知。这使得任何拥有该私钥的攻击者都可以直接以root权限登录到全球任何一台受影响的F5设备，完全绕过正常的身份验证机制。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“硬编码加密密钥”作为漏洞类型：本案例的核心是展示了因厂商在所有设备中重复使用同一个密钥对而导致的灾难性后果。
+# 2. 攻击目标为核心数据中心设备：将攻击平面扩展到了应用交付控制器(ADC)这一企业网络的心脏地带。
+# 3. 再次强化“不安全设计”：是继Arris和Juniper之后，又一个深刻揭示厂商自身设计缺陷导致严重安全问题的力证。

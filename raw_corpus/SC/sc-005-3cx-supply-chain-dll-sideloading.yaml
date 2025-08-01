@@ -1,0 +1,27 @@
+  - ID: sc-005
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - 3CX桌面客户端供应链攻击事件
+    - 攻击者使用了DLL侧加载(DLL Sideloading)技术进行持久化
+    - 此次攻击为跨平台攻击，同时针对Windows和macOS系统
+  Title_CN: 软件供应链-3CX攻击事件
+  Title_EN: supply chain attack - 3cx attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某企业办公环境，员工广泛使用3CX桌面客户端进行VoIP通信。
+    - 事件描述：安全社区披露，3CX桌面客户端的合法软件更新中被植入了恶意软件，影响了Windows和macOS两个平台。
+    - 上下文：攻击者通过供应链攻击，在更新包中嵌入了利用DLL侧加载技术进行持久化的后门。在Windows上，恶意软件分两阶段(Taxhaul, Coldcat)执行；在macOS上则使用名为Simplesea的恶意软件。这些后门允许攻击者进行文件传输、命令执行等远程控制活动。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“DLL侧加载”技术：本案例是首个详细展示攻击者如何利用DLL侧加载这一经典技术来实现持久化和防御规避的样本。
+# 2. 引入“跨平台攻击”概念：首次展示了供应链攻击同时覆盖Windows和macOS两大主流桌面操作系统，体现了攻击的广泛性。
+# 3. 强化多阶段攻击模式：清晰地展示了从初步植入到分发第二阶段功能更强的后门的攻击演进过程。

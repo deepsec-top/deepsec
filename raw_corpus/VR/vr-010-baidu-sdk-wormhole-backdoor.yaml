@@ -1,0 +1,28 @@
+- ID: vr-010
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - 百度Moplus SDK“虫洞(Wormhole)”后门事件
+    - 根因是SDK开启了一个无任何身份验证的本地HTTP服务
+    - 攻击者可在同一网络下远程控制受感染的Android设备
+  Title_CN: 漏洞利用-百度Moplus SDK“虫洞”后门事件
+  Title_EN: vulnerability exploitation - baidu moplus sdk wormhole backdoor
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某公司的业务依赖于一款集成了百度Moplus SDK的Android应用程序。
+    - 事件描述：安全社区披露，百度Moplus SDK中存在一个被称为“虫洞(Wormhole)”的严重后门/漏洞。
+    - 上下文：该SDK会在Android设备上开启一个本地HTTP服务，但该服务没有任何访问权限控制。这导致任何连接到同一网络的攻击者，都可以向该服务发送指令，从而在用户不知情的情况下实现推送钓鱼网页、窃取本地文件、甚至静默安装任意应用等高危操作。由于该SDK被集成到上万款App中，影响了数亿用户。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入移动端(Android)安全生态：本案例是首个专注于Android平台及其第三方SDK生态的样本，填补了移动安全领域的空白。
+# 2. 引入“本地网络攻击”向量：清晰地展示了攻击者如何利用局域网环境（如公共Wi-Fi）直接攻击设备上的脆弱服务。
+# 3. 典型的“不安全设计”案例：其根源并非编码错误，而是厂商发布了一个带有严重设计缺陷的组件，是“Insecure by Design”的又一力证。
+# 4. 展示了SDK作为供应链风险源：深刻揭示了第三方SDK自身的安全质量是如何通过供应链影响大量App和最终用户的。

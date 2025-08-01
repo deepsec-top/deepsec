@@ -1,0 +1,28 @@
+- ID: sc-016
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - WireX Android Botnet事件
+    - 攻击者将恶意代码伪装成普通应用上传至官方Google Play商店
+    - 最终目的是构建移动僵尸网络并发动DDoS攻击
+  Title_CN: 软件供应链-WireX安卓僵尸网络污染Google Play事件
+  Title_EN: supply chain attack - wirex android botnet on google play
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某企业的员工或客户在其Android设备上安装了来自Google Play商店的各类应用。
+    - 事件描述：安全社区联合披露，一个名为“WireX”的僵尸网络通过Google Play商店中的约300款伪装应用进行传播。
+    - 上下文：这些看似无害的应用（如铃声、存储管理工具等）被植入了恶意代码。一旦安装，设备就会成为僵尸网络的一部分，并被用于对其他目标发起大规模DDoS攻击。这是一个典型的通过污染官方应用市场进行的“捆绑下载”式供应链攻击。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入Android/Google Play生态：本案例是首个专注于Android官方应用商店供应链攻击的样本，与sc-008(XcodeGhost/iOS)形成完美互补。
+# 2. 引入移动僵尸网络(Mobile Botnet)：清晰地展示了如何通过污染App来构建一个由海量移动设备组成的僵尸网络。
+# 3. DDoS作为攻击意图：首次将供应链攻击的最终目的指向了构建DDoS攻击能力，丰富了攻击动机的类型。
+# 4. 完美的“捆绑下载”范例：是展示攻击者如何将恶意代码植入看似合法的应用中，并通过官方渠道分发的教科书式案例。

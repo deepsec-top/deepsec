@@ -1,0 +1,28 @@
+- ID: vr-005
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Apache Log4j2高危漏洞事件，又称"Log4Shell" (CVE-2021-44228)
+    - 攻击者通过JNDI注入的方式触发远程代码执行(RCE)
+    - 由于其作为基础库被广泛的间接依赖，导致影响范围和修复难度极大
+  Title_CN: 漏洞利用-Apache Log4j2远程代码执行漏洞
+  Title_EN: vulnerability exploitation - apache log4j2 remote code execution (Log4Shell)
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某公司的应用系统基于Java技术栈开发。
+    - 事件描述：安全社区披露了Apache Log4j2日志框架中存在一个被称为“Log4Shell”的严重远程代码执行漏洞(CVE-2021-44228)。
+    - 上下文：攻击者只需构造一段包含恶意JNDI查找的特殊字符串，并设法让应用程序通过Log4j2将其记入日志（例如，通过一个包含恶意字符串的HTTP User-Agent头），即可在服务器上执行任意代码。由于Log4j2是Java生态中最基础、最流行的日志库之一，它可能作为间接依赖被深埋在众多软件和中间件中，排查和修复极为困难。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“基础日志库”作为攻击平面：本案例的核心是展示了对一个无处不在、却又容易被忽视的基础组件的攻击，其影响范围史无前例。
+# 2. 展示了“打印即触发”的全新攻击模式：攻击者只需找到任何一个能将输入记入日志的地方即可发起攻击，攻击面极广。
+# 3. 深刻揭示了“间接/传递性依赖”风险：本案例是阐述软件物料清单(SBOM)和深度依赖分析重要性的完美教材。
+# 4. 引入JNDI注入这一特定技术：丰富了语料库在Java生态下特定攻击技术的覆盖。

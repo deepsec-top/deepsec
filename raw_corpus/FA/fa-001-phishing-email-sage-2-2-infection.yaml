@@ -1,0 +1,20 @@
+- ID: fa-001
+  Category: 钓鱼攻击
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Sage 2.2 勒索病毒感染事件
+    - 通过钓鱼邮件诱使用户打开恶意.zip附件进行传播
+  Title_CN: 钓鱼攻击-钓鱼邮件感染Sage2.2勒索病毒
+  Title_EN: phishing attack - Sage 2.2 ransomware infection via phishing email
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某电网公司办公网络环境。
+    - 事件描述：多台办公终端出现文件被加密的情况，文件后缀被添加为".sage"，修改后内容为乱码。
+    - 上下文：经过分析，确认感染的是Sage 2.2勒索病毒。病毒的传播途径被判定为钓鱼邮件，邮件中包含恶意的.zip附件，员工被诱骗打开后导致终端被感染。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |

@@ -1,0 +1,28 @@
+- ID: mc-004
+  Category: 挖矿木马
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - TeamTNT挖矿组织，主要针对云主机和容器化环境
+    - 利用暴露的Docker Remote API和Kubernetes API进行入侵
+    - 窃取云凭证并部署扫描工具，将被黑系统变为新的攻击基础设施
+  Title_CN: 挖矿木马-TeamTNT针对Docker和Kubernetes的攻击
+  Title_EN: mining trojan - teamtnt attack on docker and kubernetes
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某公司的业务部署在云原生的容器化环境中，使用Docker和Kubernetes。
+    - 事件描述：安全社区披露，TeamTNT组织利用暴露的Kubernetes API接口，对全球近50000个IP发起了攻击。
+    - 上下文：攻击者通过利用未授权访问的Docker或Kubernetes API，在目标环境中执行恶意脚本，植入挖矿程序。同时，他们还会部署网络扫描工具(masscan)和IRC僵尸网络程序，将被攻陷的云环境转变为其自身的攻击基础设施，用于扫描和攻击更多目标。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入云原生安全作为攻击平面：本案例是首个专注于攻击Docker和Kubernetes等容器化环境的样本，代表了云时代的新型威胁。
+# 2. 展示了针对编排层的攻击：清晰地揭示了攻击者如何通过控制Kubernetes API来对整个集群进行大规模感染。
+# 3. 引入“攻击基础设施”部署：展示了攻击者将被攻陷系统转变为其自身的扫描和攻击节点的策略。
+# 4. 聚焦云凭证窃取：是云原生环境下，横向移动和权限扩大的核心手段。

@@ -1,0 +1,27 @@
+- ID: it-007
+  Category: 内部威胁与横向移动
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - VoidCrypt勒索病毒感染事件
+    - 攻击者通过链式的“多级跳板”进行深度内网渗透
+    - 攻击中利用了FRP代理工具
+  Title_CN: 内部威胁与横向移动-多级跳板式RDP爆破
+  Title_EN: insider threat & lateral movement - multi-hop rdp brute force
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某政府部门，运维人员为方便管理将一台服务器(服务器C)的RDP端口映射至公网。
+    - 事件描述：多台服务器感染VoidCrypt勒索病毒。
+    - 上下文：攻击者首先通过暴力破解暴露在公网的服务器C的用户名和密码，获得初始控制权，并在其上部署了FRP代理程序。随后，攻击者以此为跳板，对内网进行扫描和RDP暴力破解，相继攻陷服务器B、服务器A，并持续以新攻陷的机器为跳板进行链式渗透，最终在多台主机上远程执行了勒索程序。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“多级跳板/岛屿跳跃”攻击模式：本案例首次清晰地展示了攻击者“C->B->A”的链式渗透路径，是高级攻击中的典型战术。
+# 2. 引入特定代理工具IOC：首次包含了FRP(Fast Reverse Proxy)这一具体的代理工具，丰富了威胁狩猎的指标。
+# 3. 将暴力破解作为核心横向移动手段：展示了RDP爆破不仅可用于初始访问，也可被反复用于内网的持续扩张。

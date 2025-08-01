@@ -1,0 +1,27 @@
+- ID: vr-004
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Phobos勒索病毒家族感染事件
+    - 展示了从Web漏洞入侵到内网大规模扩散的完整攻击链
+    - 攻击中包含了关闭终端安全软件的防御规避行为
+  Title_CN: 漏洞利用-完整攻击链感染Phobos勒索病毒
+  Title_EN: vulnerability exploitation - full attack chain leads to phobos ransomware infection
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某医疗卫生行业，一台应用服务器的应用系统端口(8003)映射在公网。
+    - 事件描述：内网2台服务器和11台终端感染了Phobos勒索病毒变种，文件被大规模加密。
+    - 上下文：攻击链被确认为：1)攻击者利用公网应用服务器的已知漏洞上传Webshell获得初始权限。2)提权后，关闭终端安全软件并上传恶意程序。3)将该服务器作为跳板机，通过RDP暴力破解获得内网另一台服务器的权限。4)利用内网开放的445端口进行横向扩散，最终导致多台设备感染。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 完整杀伤链(Kill Chain)展示：本案例是首个完整呈现“初始访问->提权->防御规避->横向移动”全过程的样本。
+# 2. 混合型威胁(Blended Threat)典范：清晰地展示了攻击者如何将Web漏洞、RDP爆破、SMB传播等多种技术组合起来进行攻击。
+# 3. 引入“防御规避”战术：首次包含了攻击者“关闭终端安全软件”这一关键的、在ATT&CK框架中非常重要的战术。

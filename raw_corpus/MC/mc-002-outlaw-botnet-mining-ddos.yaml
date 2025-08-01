@@ -1,0 +1,28 @@
+- ID: mc-002
+  Category: 挖矿木马
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Outlaw僵尸网络，具备DDoS和挖矿双重功能
+    - 传播方式为利用Shellshock、Drupalgeddon2等漏洞及SSH暴力破解
+    - 持久化方式为写入SSH公key
+  Title_CN: 挖矿木马-Outlaw僵尸网络
+  Title_EN: mining trojan - outlaw botnet
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某公司的云主机或Linux服务器环境。
+    - 事件描述：大量云主机被发现存在SSH暴力破解记录，CPU资源被未知进程耗尽，并被植入了陌生的SSH公钥。
+    - 上下文：经分析，此为Outlaw僵尸网络的攻击行为。该僵尸网络主要通过利用Shellshock、Drupalgeddon2等Web漏洞或进行SSH暴力破解来传播。其目的具有混合性，早期用于DDoS攻击，后期增加了门罗币(XMR)挖矿功能。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入僵尸网络(Botnet)作为攻击载体：本案例的核心是展示了挖矿木马背后的僵尸网络组织形式及其运作模式。
+# 2. 引入混合型攻击意图：清晰地展示了黑产团伙从DDoS攻击扩展到挖矿牟利的“业务转型”过程。
+# 3. 完整的攻击链条：详细地呈现了该挖矿木马的入侵入口(漏洞利用)、横向移动(SSH爆破)和持久化(SSH公钥)的全过程。
+# 4. 丰富了Linux平台威胁：是专门针对Linux服务器的典型攻击案例，补充了相关平台的威胁画像。

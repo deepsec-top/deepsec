@@ -1,0 +1,28 @@
+- ID: apt-012
+  Category: 高级持续性威胁
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Slingshot APT组织的复杂网络间谍活动
+    - 恶意软件包含内核模式(Kernel-Mode)组件，可在系统最底层运行
+    - 通过感染MikroTik路由器，并利用其管理工具作为攻击向量
+  Title_CN: 高级持续性威胁-Slingshot APT的内核级攻击
+  Title_EN: apt - slingshot apt kernel-mode attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：中东及非洲的个人或政府机构。
+    - 事件描述：安全社区披露了一场潜伏长达6年、技术极为复杂的APT攻击，代号“Slingshot”。
+    - 上下文：攻击者首先入侵MikroTik路由器，并篡改其管理程序。当管理员使用合法的Winbox Loader工具连接路由器时，一个包含用户模式(GollumApp)和内核模式(Cahnadr)组件的复杂后门被植入PC。其内核模式组件拥有最高权限，并被精心设计以避免系统崩溃，实现了极致的隐蔽和数据窃取能力。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入内核模式(Kernel-Mode)恶意软件：本案例是首个展示运行在操作系统内核层的后门的样本，代表了最高级别的权限和隐蔽性。
+# 2. 引入路由器作为攻击向量：首次展示了通过感染网络设备，再利用其合法管理工具来攻击管理员PC的精妙攻击路径。
+# 3. 引入系统文件替换技术：展示了通过替换同名同大小的系统DLL文件来实现持久化的经典、隐蔽手法。
+# 4. 极致的长期潜伏能力：长达6年的潜伏期是顶级APT组织在行动安全(OPSEC)和技术隐蔽性方面能力的终极体现。

@@ -1,0 +1,27 @@
+- ID: sc-010
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - NPM包 `ua-parser-js` 供应链攻击事件
+    - 攻击者劫持NPM包发布权限后植入恶意代码
+    - 载荷包含挖矿程序和密码窃取功能，为复合型攻击
+  Title_CN: 软件供应链-NPM包ua-parser-js攻击
+  Title_EN: supply chain attack - npm package ua-parser-js attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某公司的软件项目，其依赖链中包含了NPM包 `ua-parser-js`。
+    - 事件描述：安全社区披露，NPM官方仓库中的 `ua-parser-js` 包被恶意劫持，其多个版本被植入了恶意代码。
+    - 上下文：攻击者在劫持了包的发布权限后，植入了能够进行挖矿和窃取浏览器密码/Cookie的恶意软件。由于该库被众多知名企业和项目依赖，导致此次攻击通过依赖关系链条扩散到数百万台计算机。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入NPM生态系统供应链攻击：本案例是首个专注于全球最大的软件注册表NPM和JavaScript生态的攻击样本。
+# 2. 展示“依赖注入”风险：完美诠释了即使是一个基础功能库被污染，也会通过层层依赖对海量项目造成巨大影响。
+# 3. 复合型恶意载荷：清晰地展示了攻击者在一次攻击中同时实现多种恶意目的（挖矿+信息窃取）的策略。

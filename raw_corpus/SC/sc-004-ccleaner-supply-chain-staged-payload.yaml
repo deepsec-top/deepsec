@@ -1,0 +1,27 @@
+- ID: sc-004
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - CCleaner供应链攻击事件
+    - 攻击根因疑似为开发环境的CRT静态库被污染
+    - 后门使用DGA(域名生成算法)和伪造Host头等技术进行隐蔽通信
+  Title_CN: 软件供应链-CCleaner攻击事件
+  Title_EN: supply chain attack - ccleaner attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某企业办公环境，员工使用知名的CCleaner工具进行系统优化。
+    - 事件描述：安全社区披露，知名系统清理工具CCleaner的官方发布版本v5.33中被植入了恶意后门。
+    - 上下文：攻击者疑似通过入侵开发环境并污染CRT静态库函数，导致编译出的程序被自动植入后门。该后门会收集主机信息，并通过伪造Host头(`speccy.piriform.com`)的HTTPS请求进行外传。如果主C2失效，还会启用DGA(域名生成算法)来寻找备用C2。这是一个典型的分阶段攻击，旨在对海量受害者中的高价值目标执行进一步操作。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“分阶段(Staged)”攻击模式：本案例是首个清晰展示“广撒网初步感染 -> 筛选高价值目标 -> 二次精准打击”这一两阶段攻击战术的样本。
+# 2. 引入DGA和伪造Host头：清晰地展示了后门用于实现C2通信容灾和流量规避的具体技术手段。
+# 3. 强调“开发环境污染”：具体指出了通过污染编译环境中的基础库(CRT)来实现供应链攻击的高级手法。

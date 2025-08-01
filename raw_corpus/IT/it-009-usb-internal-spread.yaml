@@ -1,0 +1,28 @@
+- ID: it-009
+  Category: 内部威胁与横向移动
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - WannaMine4.0挖矿蠕虫感染事件
+    - 初始入侵点为携带病毒的U盘
+    - 在物理隔离的独立网段内通过MS17-010漏洞横向传播
+  Title_CN: 内部威胁与横向移动-U盘传播WannaMine挖矿蠕虫
+  Title_EN: insider threat & lateral movement - wannamine mining worm spread via usb
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某单位的多媒体教室，该网络为独立网段，无法访问互联网，且主机均为未打补丁的Windows XP系统。
+    - 事件描述：教室内20台主机全部感染WannaMiner挖矿病毒，业务严重受影响。
+    - 上下文：经分析，事件的起点是有人在教师机上使用了携带病毒的U盘，导致了“零号病人”的产生。由于该教室网络虽物理隔离但内部主机均未修复MS17-010（永恒之蓝）漏洞，病毒随后在内网进行了蠕虫式传播，最终感染了所有主机。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“可移动介质(USB)”作为初始向量：本案例是典型的通过U盘将外部威胁带入内部隔离网络的范例。
+# 2. 强调“假性隔离”的风险：深刻揭示了无互联网访问的“隔离网络”在缺乏物理介质管控和内部加固时同样脆弱。
+# 3. 展示“零号病人”的溯源过程：完美呈现了应急响应中如何通过排除法定位初始感染源的分析思路。
+# 4. 突出遗留系统(Legacy System)的脆弱性：本案例的Windows XP环境是大量真实场景中遗留系统安全风险的缩影。
