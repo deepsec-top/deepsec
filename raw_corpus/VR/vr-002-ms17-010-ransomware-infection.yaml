@@ -1,0 +1,20 @@
+- ID: vr-002
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - MS17-010 "永恒之蓝" (EternalBlue) 漏洞利用导致的勒索病毒感染
+    - 典型的蠕虫式传播漏洞，通过SMB服务进行攻击
+  Title_CN: 漏洞利用-MS17-010"永恒之蓝"漏洞感染勒索病毒
+  Title_EN: vulnerability exploitation - MS17-010 EternalBlue ransomware infection
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某医院的内部服务器环境，安全域划分不明确。
+    - 事件描述：多台服务器突然出现重启或蓝屏，文件被勒索软件加密。
+    - 上下文：经过检查，确认服务器存在MS17-010（永恒之蓝）高危漏洞，并向网络开放了445端口。攻击被确认为通过此漏洞发起。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |

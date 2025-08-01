@@ -1,0 +1,28 @@
+- ID: vr-006
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - VPNFilter模块化恶意软件攻击事件
+    - 攻击目标为路由器、NAS等IoT设备，并原生支持监控SCADA工控协议
+    - 恶意软件具备自毁功能，可永久损坏设备固件(“变砖”)
+  Title_CN: 漏洞利用-VPNFilter恶意软件攻击IoT与工控系统
+  Title_EN: vulnerability exploitation - vpnfilter malware attack on iot and ics
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某关键基础设施部门（如能源、水务），其网络中包含大量IoT设备（路由器、NAS）和SCADA工控系统。
+    - 事件描述：安全社区披露了一场由APT28组织发起的、针对全球超过50万台IoT设备的大规模攻击，该攻击主要使用名为VPNFilter的模块化恶意软件。
+    - 上下文：攻击者通过利用已知漏洞或默认弱口令入侵路由器、NAS等设备。植入的VPNFilter恶意软件不仅能窃取网络流量和凭证，还具备直接监控Modbus SCADA工控协议的能力，并可通过自毁指令永久损坏设备。其C2通信使用Tor或SSL进行加密，具备极强的隐蔽性。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入IoT设备作为核心攻击平面：本案例是首个专注于攻击网络基础设施（路由器、NAS）而非传统服务器或PC的样本。
+# 2. 直接的ICS/SCADA威胁：首次展示了原生具备监控（甚至可能操控）工业控制协议(Modbus)能力的恶意软件，直接威胁物理世界安全。
+# 3. 引入“变砖”作为破坏手段：展示了一种以永久性损坏硬件设备为目的的纯粹破坏性攻击战术。
+# 4. 跨硬件架构的模块化恶意软件：体现了APT组织为实现大规模感染而具备的复杂恶意软件工程能力。

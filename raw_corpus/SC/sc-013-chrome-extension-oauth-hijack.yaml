@@ -1,0 +1,28 @@
+- ID: sc-013
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - 针对Chrome扩展生态的供应链攻击
+    - 攻击者通过诱导开发者授权恶意OAuth应用来劫持开发者账号
+    - 核心意图为窃取Facebook广告账户信息，并涉及2FA绕过
+  Title_CN: 软件供应链-Chrome扩展遭入侵窃取Facebook账户
+  Title_EN: supply chain attack - chrome extensions hijacked to steal facebook accounts
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某企业，其员工在日常工作中使用多款Chrome浏览器扩展，包括Proxy SwitchyOmega V3等。
+    - 事件描述：安全社区披露，超过16款、影响超60万用户的Chrome扩展被发现遭供应链攻击。
+    - 上下文：攻击者通过钓鱼邮件诱导扩展程序的开发者授权一个恶意的Google OAuth应用，从而劫持了开发者的Chrome商店发布权限。随后，攻击者在这些合法的扩展中植入恶意代码，主要用于窃取用户的Facebook广告账户令牌和凭证，并通过混淆技术绕过了Chrome商店的自动审核。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入浏览器扩展作为攻击生态：本案例是首个专注于攻击浏览器扩展这一庞大且贴近用户的软件生态的样本。
+# 2. 引入OAuth授权钓鱼作为初始向量：清晰地展示了通过欺骗性OAuth授权来劫持开发者账户的现代攻击技术。
+# 3. 高度聚焦的攻击意图：其目标并非宽泛的凭证，而是精准地窃取高价值的Facebook广告账户，代表了黑产的精细化分工。
+# 4. 引入2FA绕过技术：首次具体展示了针对多因素认证的绕过场景，极具现实意义。

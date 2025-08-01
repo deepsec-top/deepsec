@@ -1,0 +1,28 @@
+- ID: it-004
+  Category: 内部威胁与横向移动
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - 纯内网环境下的横向移动攻击
+    - 攻击者通过对IPC$共享进行暴力破解来获取凭据
+    - 攻击中滥用了合法的第三方工具(TeamViewer, ProcessHacker)进行持久化和操作
+  Title_CN: 内部威胁与横向移动-内网IPC弱口令爆破感染勒索病毒
+  Title_EN: insider threat & lateral movement - internal ipc weak password brute force leads to hermes837 ransomware
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某国有企业内部网络环境，主机审计策略配置存在缺陷。
+    - 事件描述：多台主机感染Hermes837勒索病毒，文件被加密，后缀变为“Hermes837”。
+    - 上下文：攻击者在内网通过对IPC$共享进行暴力破解，成功登录了一台办公主机。随后，攻击者在该主机上安装了TeamViewer和ProcessHacker等工具，并以此为跳板，在SMB服务器上投放了恶意程序，最终导致病毒在内网大规模传播。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+
+# ---
+# [Note] Case Study Value:
+# 1. 纯内网横向移动场景：本案例区别于所有从外部发起的攻击，专注于已在内网的攻击者如何进行扩张。
+# 2. 核心向量为IPC$爆破：引入了通过暴力破解获取内网凭据这一关键的横向移动技术。
+# 3. 引入“滥用合法工具(LOTL)”概念：首次展示了攻击者使用TeamViewer等合法软件进行持久化控制，是高级攻击中常见的隐蔽手段。

@@ -1,0 +1,28 @@
+- ID: it-008
+  Category: 内部威胁与横向移动
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - 攻击者利用Consul漏洞作为初始入口
+    - 通过窃取本地保存的SSH私钥进行横向移动
+    - 最终通过劫持Ansible自动化工具实现恶意软件的大规模传播
+  Title_CN: 内部威胁与横向移动-SSH私钥泄露致Ansible被劫持
+  Title_EN: insider threat & lateral movement - ssh key theft leads to ansible hijack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某大型互联网公司，拥有数万台虚拟机，并使用Ansible进行自动化管理。
+    - 事件描述：公司内网数万台虚拟机被发现感染了挖矿木马。
+    - 上下文：攻击者首先利用Consul组件的远程命令执行漏洞进入内网，随后通过扫描并利用主机上本地存储的SSH私钥，进行横向移动，最终成功攻陷了Ansible自动化服务器。得手后，攻击者直接滥用Ansible的合法批量管理功能，将挖矿木马一键推送至其管理的所有虚拟机，导致了大规模感染。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“滥用IT自动化工具”：本案例的核心是展示了攻击者如何劫持Ansible等合法管理工具，将其变为最高效的恶意软件分发网络。
+# 2. 引入“SSH私钥管理风险”：首次清晰地展示了因本地存储SSH私钥而导致的横向移动风险。
+# 3. 展示“攻击放大”效应：完美诠释了攻陷中央管理节点（Ansible）是如何将一个单点入侵，放大为一场全网灾难的。
+# 4. 现代云原生入口：通过Consul漏洞，引入了与现代服务网格/微服务架构相关的攻击入口。

@@ -1,0 +1,28 @@
+- ID: vr-013
+  Category: 漏洞利用
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - DarkHotel(APT-C-06)利用IE 0day“双杀”漏洞的攻击
+    - 攻击中使用了Bypass UAC技术进行权限提升
+    - 通过劫持Windows Search系统服务实现了高度隐蔽的持久化
+  Title_CN: 漏洞利用-DarkHotel利用IE 0day的定向攻击
+  Title_EN: vulnerability exploitation - darkhotel targeted attack with ie 0day
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：中国企业高管、国防及电子工业机构。
+    - 事件描述：安全社区披露，APT组织“DarkHotel”利用IE“双杀”0day漏洞(CVE-2018-8174)发动了高度复杂的定向攻击。
+    - 上下文：攻击者通过鱼叉邮件投递恶意Word文档触发漏洞，执行多阶段PowerShell脚本。该脚本不仅通过修改注册表绕过了Windows UAC进行提权，还通过劫持合法的系统DLL，修改了Windows Search服务的配置，使其在启动时加载攻击者的核心后门(msfte.dll)，从而实现了极其隐蔽的持久化。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入Bypass UAC技术：本案例是首个清晰展示攻击者为获取更高权限而绕过Windows用户账户控制(UAC)的样本。
+# 2. 引入“服务劫持”持久化：展示了通过修改合法系统服务配置来实现持久化的顶级隐蔽技术，区别于创建新服务或计划任务。
+# 3. 详细的插件化后门架构：具体揭示了一个全功能后门如何通过不同插件（键盘记录、截屏等）来扩展其恶意功能。
+# 4. 完整的后渗透技术链：完美串联了“漏洞利用 -> 提权 -> 持久化 -> 载荷执行”这一经典的后渗透攻击流程。

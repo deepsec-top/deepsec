@@ -1,0 +1,27 @@
+- ID: sc-003
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Kaseya VSA 供应链攻击事件
+    - 攻击者(REvil)利用零日漏洞入侵Kaseya VSA服务器
+    - 通过MSP将勒索软件大规模分发给其下游客户
+  Title_CN: 软件供应链-Kaseya VSA攻击分发勒索软件
+  Title_EN: supply chain attack - kaseya vsa attack distributing ransomware
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某托管服务提供商(MSP)，使用Kaseya VSA平台远程管理大量客户的IT基础设施。
+    - 事件描述：安全社区披露，知名的勒索软件团伙REvil利用Kaseya VSA产品中的一个零日漏洞，发动了大规模供应链攻击，导致全球超过1500家企业被加密。
+    - 上下文：攻击者通过利用该零日漏洞，控制了MSP的VSA服务器，并滥用其合法的软件分发功能，向所有被管理的客户终端推送并执行了勒索软件，并索要巨额赎金。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“攻击MSP”作为杠杆：本案例的核心是展示了通过攻击托管服务提供商(MSP)来实现攻击效果指数级放大的模式。
+# 2. 以“零日漏洞”为供应链入口：区别于其他案例，本案例的初始入侵点是针对供应商产品本身的一个未公开的高危漏洞。
+# 3. 将供应链直接用于大规模勒索：清晰地展示了供应链攻击如何被用作一个高效、自动化的勒索软件投递网络，直接服务于金融勒索目的。

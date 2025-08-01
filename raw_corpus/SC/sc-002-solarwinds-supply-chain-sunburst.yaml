@@ -1,0 +1,28 @@
+- ID: sc-002
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - SolarWinds Orion平台供应链攻击事件 (Sunburst后门)
+    - 攻击者为APT29(Nobelium)，采用“低慢攻击”进行长期潜伏
+    - 攻击导致了Mimecast的TLS证书私钥等下游关键凭证泄露
+  Title_CN: 软件供应链-SolarWinds攻击事件
+  Title_EN: supply chain attack - solarwinds attack
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某大型企业或政府机构，使用SolarWinds Orion平台进行网络管理。
+    - 事件描述：安全社区披露，APT29(Nobelium)组织通过渗透SolarWinds的开发构建流程，在其Orion平台的合法更新包中植入了“Sunburst”后门。
+    - 上下文：该后门经过SolarWinds的官方数字签名，被分发给上万名客户。攻击者利用其进行低慢速网络间谍活动。一个具体的下游后果是，云安全公司Mimecast的TLS证书私钥被窃取，这使得攻击者具备了对其邮件服务器进行中间人攻击(MITM)的能力。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入商业软件供应链攻击：本案例与XZ(开源)形成完美互补，展示了针对闭源商业软件开发环境的攻击模式。
+# 2. 引入“APT”和“间谍活动”：首次明确引入国家级背景的APT组织作为攻击者，并将攻击意图从破坏/勒索扩展到了长期、隐蔽的信息窃取。
+# 3. 引入“低慢攻击”战术：首次包含了攻击者为规避检测而采用的“Low and Slow”高级战术，是APT行为的核心特征之一。
+# 4. 展示了级联式的下游影响：清晰地揭示了供应链攻击不仅影响直接客户，还会危及客户的客户（如Mimecast的邮件服务），导致TLS证书等关键基础设施凭证泄露。

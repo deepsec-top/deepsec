@@ -1,0 +1,27 @@
+- ID: sc-007
+  Category: 软件供应链
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - Codecov Bash Uploader供应链攻击事件
+    - 攻击目标为企业的CI/CD（持续集成/持续交付）环境
+    - 攻击意图为窃取环境变量中存储的API密钥、令牌等敏感凭证
+  Title_CN: 软件供应链-Codecov攻击窃取CI/CD凭证
+  Title_EN: supply chain attack - codecov attack on ci-cd
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：某技术公司，在DevOps流程中广泛使用CI/CD管道进行自动化构建和测试。
+    - 事件描述：安全社区披露，知名的代码覆盖率工具Codecov的Bash Uploader脚本曾被篡改。
+    - 上下文：攻击者通过篡改该脚本，使其在正常上传代码覆盖率数据的同时，将CI/CD环境中的所有环境变量（包含API密钥、服务令牌和数据库凭证等）悄悄地发送到攻击者的服务器。此攻击可导致攻击者获取访问公司内部各种系统的权限。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+
+  Response: |
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入CI/CD管道作为核心攻击平面：本案例是首个专注于攻击DevOps流程本身的样本，揭示了CI/CD环境的安全风险。
+# 2. 聚焦于开发过程中的凭证窃取：其攻击目标并非终端RCE，而是窃取在构建过程中使用的各类高价值凭证，是一种全新的攻击意图。
+# 3. 强调脚本工具的风险：展示了即便是一个简单的Bash脚本，在供应链中被篡改后也能造成灾难性的后果。

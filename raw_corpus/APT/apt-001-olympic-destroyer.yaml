@@ -1,0 +1,59 @@
+- ID: apt-001
+  Category: 高级持续性威胁
+  Created_At: 2025-07-31
+  Contributors: 
+    - ZacharyRiser
+  Additional_Info: |
+    - "Olympic Destroyer" APT攻击事件
+    - 攻击采用了“虚假线索(False Flag)”战术来干扰溯源
+    - 利用隐写术(Steganography)将恶意代码隐藏于图片中
+  Title_CN: 高级持续性威胁-平昌冬奥会Olympic Destroyer攻击
+  Title_EN: apt - olympic destroyer attack on pyeongchang olympics
+  Question: |
+    请以SOC团队的指挥官身份，评估并决策以下安全事件：
+    - 组织背景：韩国平昌冬奥会IT运营中心。
+    - 事件描述：在北京时间2025年2月9日冬奥会开幕式期间，票务系统、官方网站及场馆Wi-Fi服务突然大规模中断。EDR系统检测到多台关键服务器（包括域控制器DC-01）出现破坏性行为告警。
+    - 上下文：经初步溯源，攻击始于一封伪装成来自韩国国家反恐中心（`security@nctc.go.kr`）的鱼叉邮件，邮件主题为“평창 동계 올림픽 긴급 보안 업데이트(平昌冬奥会紧急安全更新)”。附件是一个名为`Urgent_Security_Measures.docx`的Word文档（SHA256: `a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2`）。员工打开并启用宏后，文档通过PowerShell从一个被攻陷的韩国本地旅游网站`www.pyeongchang-travel.co.kr`下载了一张名为`logo.png`的图片。脚本利用隐写术从图片像素中提取出第二阶段的载荷，并与另一个位于失陷网站`www.korean-ski-resort-news.com`的C2服务器建立通信。最终，C2下发了名为`winlog.tmp`的破坏性载荷（SHA256: `e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2a3b4c5d6`），该载荷执行了擦除MBR、删除卷影副本等破坏操作。
+    
+    作为SOC团队的指挥官，请你对安全事件作出评估并决策。
+  Complex_CoT: |
+      确认影响，启动响应：事件已造成业务大规模中断，定级为最高优先级（P0）安全事件。立即激活核心应急响应团队（IRT），并向管理层进行简要汇报。
+      分析初始入口 (Initial Access)：在邮件网关日志中，搜索发件人为security@nctc.go.kr的邮件，定位所有收件人，确定攻击影响的初始范围。隔离所有收到该邮件但尚未被感染的主机。
+      分析终端行为 (Execution & Persistence)：
+      在一台已隔离的受感染主机上，通过EDR日志确认WINWORD.EXE进程启动了powershell.exe。
+      分析PowerShell脚本日志，确认其连接了www.pyeongchang-travel.co.kr并下载了logo.png。
+      确认PowerShell进一步执行了内存中的解密脚本，该脚本从logo.png提取并加载了下一阶段的DLL载荷。
+      分析C2通信 (Command & Control)：
+      在NTA和防火墙日志中，筛选由PowerShell或其子进程发起的、目标为www.korean-ski-resort-news.com的HTTP/HTTPS POST请求。
+      分析流量载荷，发现其使用了自定义的Base64编码和AES加密，确认了C2信道。
+      确认C2下发了最终的破坏性载荷winlog.tmp到C:\Windows\Temp\目录。
+      分析破坏性载荷 (Impact)：
+      逆向分析winlog.tmp样本。确认其核心功能为：1) 使用PsExec等工具进行内网横向移动；2) 通过vssadmin delete shadows /all /quiet命令删除系统备份；3) 执行MBR和文件擦除操作。
+      分析“虚假线索” (False Flag)：
+      在逆向过程中，发现winlog.tmp的PDB路径、部分加密算法和代码结构，与已知的朝鲜APT组织（Lazarus Group）和中国APT组织（APT3/Gothic Panda）的恶意软件有相似之处。
+      然而，这些相似点过于明显且相互矛盾，高度怀疑是攻击者为干扰归因而故意制造的“虚假线索”。这表明对手具备极高的对抗和欺骗能力。
+      总结攻击链: 鱼叉邮件 -> 恶意宏 -> PowerShell下载器 -> 隐写术图片 -> C2通信 -> 释放破坏性载荷 -> 横向移动与系统破坏。
+
+  Response: |
+    第一阶段：紧急遏制与业务恢复 (0-4小时)
+    立即隔离: 通过EDR和网络访问控制，立即将所有已确认的受感染主机（包括域控制器）从网络中隔离，防止破坏行为横向扩散。
+    阻断C2: 在边界防火墙和DNS服务器上，立即封禁域名www.pyeongchang-travel.co.kr和www.korean-ski-resort-news.com及其解析的IP地址。
+    证据保全: 对至少一台典型的受感染主机进行完整的内存Dump和磁盘镜像，用于后续深度取证。提取所有相关恶意文件样本（DOCX, PNG, TMP）及其哈希值。
+    IOC通报: 将已确认的IOCs（文件哈希, C2域名/IP, 恶意邮箱地址）快速下发到所有安全设备（EDR, IDS, SIEM）中，进行全网威胁狩猎。
+    业务恢复: 启动灾难恢复预案。使用离线备份，在干净的隔离环境中重建域控制器和其他核心服务器。优先恢复票务和官网等关键对外服务。
+    第二阶段：深度调查与全面加固 (4-72小时)
+    6. 深度取证: 组织内部和外部专家团队，对获取的样本和磁盘镜像进行深度逆向分析和关联取证，确认“虚假线索”的细节，并尝试寻找攻击者留下的真实“指纹”。
+    7. 凭证重置: 对在攻击期间可能已泄露的所有账户凭证（特别是管理员账户和域控凭证）执行强制性的密码重置。
+    8. 全网排查: 基于深度取证发现的TTPs（如特定的PowerShell命令模式、计划任务名），在全网范围内进行无文件攻击的深度排查。
+    9. 安全加固:
+    - 立即对全员进行一次针对性的安全意识培训，警示此类鱼叉邮件攻击。
+    - 部署更严格的邮件过滤规则，并对来自外部的Office文档默认禁用宏。
+    - 强化PowerShell的日志记录和执行策略，限制其在普通终端上的使用。
+    10. 外部协作: 与国家级CERT和网络安全情报合作伙伴共享脱敏后的IOCs和攻击者TTPs，寻求更广泛的威胁情报支持，并对攻击者进行联合追踪。
+
+# ---
+# [Note] Case Study Value:
+# 1. 引入“网络破坏(Sabotage)”作为攻击意图：本案例的核心是展示了以制造混乱、破坏关键业务为目的的攻击，而非窃取或勒索。
+# 2. 引入“False Flag”战术：首次包含了攻击者为干扰归因而故意模仿其他组织手法的“虚假线索”高级欺骗战术。
+# 3. 引入“隐写术”技术：首次展示了攻击者利用图片等正常文件隐藏恶意代码的高级隐蔽技术。
+# 4. 典型的APT攻击链：完美呈现了“鱼叉邮件->宏->隐写术->C2->破坏”这一高度复杂和多阶段的APT攻击流程。
